@@ -1,0 +1,10 @@
+
+I2C Clock	400
+Slave Addr	0
+Grab Time Limit	10
+Max Wait after Last Trigger	1000
+Triggered Grab Image Count	2000
+Raw Gain	40
+Gamma	0.85
+Exposure	73
+Edge Band	9

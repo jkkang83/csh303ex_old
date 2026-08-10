@@ -1,0 +1,20 @@
+--Vieworks Camera Setting File 
+--Model Name :VC-2MC-M340
+--
+srm 1
+set 700
+stm 0
+sts 1
+ses 0
+stp 1
+sti 0
+scl 3
+sci 0
+sag 2
+sao 0
+sst 0
+ssp 1
+sha 824 1223
+sva 345 744
+sdc 1
+sdb 8

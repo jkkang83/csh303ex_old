@@ -1,0 +1,6 @@
+InputGainX 24.19
+InputGainY 23.42
+InputGainZ 16.88
+OutputGainX 0.67
+OutputGainY 0.67
+OutputGainZ 0.67
