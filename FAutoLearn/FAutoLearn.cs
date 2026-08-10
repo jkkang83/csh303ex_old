@@ -5683,7 +5683,7 @@ namespace FAutoLearn
             //  OMMS
             int i0 = 451;   //  115더해야 절대좌표 565 ~ 595
             int ie = 481;
-            int j0 = 15;// 27;    //  54 ~ 142
+            int j0 = 18;// 18;// 27;    //  54 ~ 142
             int je = 60;// 71;
             int jLen = (je - j0) / 2;   //  71-27 = 44
 
@@ -5758,13 +5758,13 @@ namespace FAutoLearn
             //  OMMT
             i0 = 184;   //  520 더해야 절대좌표
             ie = 214;
-            j0 = 11;// 19;
+            j0 = 14;// 14;// 19;
             je = 92;// 95; //95-19 = 76
             jLen = (je - j0) / 2;
             //  위 영역에서  우에서 좌로 어두워지는 경계 추출
             //  수직선 검출
             xdiff = new int[jLen][];
-            Point2d[] ptT = new Point2d[jLen];
+            List<Point2d> ptTL = new List<Point2d>();
             for (int j = 0; j < jLen; j++)
             {
                 xdiff[j] = new int[ie - i0 + 1];
@@ -5775,9 +5775,21 @@ namespace FAutoLearn
                     xdiff[j][i - i0] += qOMMT_Value[iBuf][i + (j0 + 2 * j + 1) * mOMMTImg_Width] + qOMMT_Value[iBuf][i + 1 + (j0 + 2 * j + 1) * mOMMTImg_Width]
                                       - qOMMT_Value[iBuf][i - 1 + (j0 + 2 * j + 1) * mOMMTImg_Width] - qOMMT_Value[iBuf][i - 2 + (j0 + 2 * j + 1) * mOMMTImg_Width];
                 }
-                ptT[j] = new Point2d(CalcPeakDiff(xdiff[j]) + i0 + 520, 2 * ((j0 + 2 * j) + 0.5 + 95)); //  Y 좌표 2배
+                ptTL.Add(new Point2d(CalcPeakDiff(xdiff[j]) + i0 + 520, 2 * ((j0 + 2 * j) + 0.5 + 95))); //  Y 좌표 2배
+            }
+            double meanX = ptTL.Average(p => p.X);
+            double meanY = ptTL.Average(p => p.Y);
+            for (int j = 0; j < ptTL.Count; j++)
+            {
+                if (Math.Abs(ptTL[j].X - meanX) > 2)
+                {
+                    ptTL.RemoveAt(j);
+                    j--;
+                }
             }
             //  xdiff[0], xdiff[0] 에서 각각 Peak 찾는다  일단 Y 축이 1/2 압축된 상태의 좌표로 확보한다.
+            Point2d[] ptT = ptTL.ToArray();
+            jLen = ptTL.Count;
             FZMath.Line2D ommTedge = mFZM.FitLinePCA(ptT);
 
 

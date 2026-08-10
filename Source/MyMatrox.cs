@@ -2661,10 +2661,9 @@ namespace S2System.Vision
             }
             if (bPseudoOMM)
             {
-                if (index == 0)
-                {
+                //if (index == 0)     
                     mPseudoPtsOrg = mFAL.FineOMM(index, iBuf);
-                }
+                
                 mPOMM_sX[index] = mPseudoPtsOrg[0].X;
                 mPOMM_sY[index] = mPseudoPtsOrg[0].Y;
                 mPOMM_tX[index] = mPseudoPtsOrg[3].X;
