@@ -5880,6 +5880,22 @@ namespace FAutoLearn
 
             ommres[5] = new Point2d(ommres[4].Y, -ommres[4].X);                                     // Unit Vector X in Top View
 
+    //        //Debug
+    //        double angle =
+    //Math.Atan2(ommTedge.Direction.Y,
+    //           ommTedge.Direction.X)
+    //* 180.0 / Math.PI;
+
+    //        Debug.WriteLine(
+    //            $"{iIndex}, " +
+    //            $"Count={ptT.Length}, " +
+    //            $"MeanX={ptT.Average(p => p.X):F3}, " +
+    //            $"MinX={ptT.Min(p => p.X):F3}, " +
+    //            $"MaxX={ptT.Max(p => p.X):F3}, " +
+    //            $"DirX={ommTedge.Direction.X:F6}, " +
+    //            $"DirY={ommTedge.Direction.Y:F6}, " +
+    //            $"Angle={angle:F3}");
+
             return ommres;
         }
 

@@ -2407,7 +2407,7 @@ namespace S2System.Vision
         public OpenCvSharp.Point[][] mDetectedMarkPos = new Point[30][];
         public OpenCvSharp.Point2d[][] mDetectedOMMPos = new Point2d[30][];
 
-        public OpenCvSharp.Point2d[] mPseudoPtsOrg = null;
+        //public OpenCvSharp.Point2d[] mPseudoPtsOrg = null;
         public bool FineCOG(bool IsFirst, int index, int iBuf, bool IsShowBox = false, bool need6D = true, bool needLEDavg = false, bool IsFile = false)
         {
             if (mFAL.mFidMarkSide[0] == null)
@@ -2662,7 +2662,7 @@ namespace S2System.Vision
             if (bPseudoOMM)
             {
                 //if (index == 0)     
-                    mPseudoPtsOrg = mFAL.FineOMM(index, iBuf);
+                Point2d[] mPseudoPtsOrg = mFAL.FineOMM(index, iBuf);
                 
                 mPOMM_sX[index] = mPseudoPtsOrg[0].X;
                 mPOMM_sY[index] = mPseudoPtsOrg[0].Y;

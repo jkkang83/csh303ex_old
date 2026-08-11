@@ -3922,20 +3922,36 @@ namespace CSH030Ex
             //    m__G.oCam[0].DrawCSHCross(Brushes.Red);
             //}
         }
-
+        private string m_LastBmpFolder = "";
         private void btnLoadBmpFindMark_Click(object sender, EventArgs e)
         {
             m__G.mFAL.mCandidateIndex = 0;
             m__G.oCam[0].DrawClear();
-            string sFilePath = Path.GetFullPath(m__G.m_RootDirectory + "\\Result\\RawData");
+
+            string defaultPath = Path.GetFullPath(
+                m__G.m_RootDirectory + "\\Result\\RawData");
+
             OpenFileDialog openFile = new OpenFileDialog();
             openFile.DefaultExt = "bmp";
-            openFile.InitialDirectory = sFilePath;
             openFile.Multiselect = true;
-
             openFile.Filter = "BMP(*.bmp)|*.bmp";
+
+            // 이전에 열었던 폴더가 있으면 그 폴더에서 시작
+            if (!string.IsNullOrEmpty(m_LastBmpFolder) &&
+                Directory.Exists(m_LastBmpFolder))
+            {
+                openFile.InitialDirectory = m_LastBmpFolder;
+            }
+            else
+            {
+                openFile.InitialDirectory = defaultPath;
+            }
+
             if (openFile.ShowDialog() != DialogResult.OK)
                 return;
+
+            // 선택한 파일의 폴더 기억
+            m_LastBmpFolder = Path.GetDirectoryName(openFile.FileName);
 
             m__G.oCam[0].mFAL.ClearCommonImgFile();
             //  영상들의 처리에 앞서서 반드시 들어가야 한다.
@@ -4088,7 +4104,7 @@ namespace CSH030Ex
                         else
                         {
                             strtmp += (umscale * m__G.oCam[0].mPOMM_X[fileCnt]).ToString("F2") + "\t" + (umscale * m__G.oCam[0].mPOMM_Y[fileCnt]).ToString("F2") + "\t" + (umscale * m__G.oCam[0].mPOMM_Z[fileCnt]).ToString("F2")
-                                 + "\t" + (minscale * m__G.oCam[0].mPOMM_TX[fileCnt]).ToString("F2") + "\t" + (minscale * m__G.oCam[0].mPOMM_TY[fileCnt]).ToString("F2") + "\t" + (minscale * m__G.oCam[0].mPOMM_TZ[fileCnt]).ToString("F2")
+                                 + "\t" /*+ (minscale * m__G.oCam[0].mPOMM_TX[fileCnt]).ToString("F2") + "\t" + (minscale * m__G.oCam[0].mPOMM_TY[fileCnt]).ToString("F2") + "\t"*/ + (minscale * m__G.oCam[0].mPOMM_TZ[fileCnt]).ToString("F2")
                                  //+ "\t" + (m__G.oCam[0].mPOMM_sX[fileCnt]).ToString("F3") + "\t" + (m__G.oCam[0].mPOMM_sY[fileCnt]).ToString("F3") + "\t" + (m__G.oCam[0].mPOMM_tX[fileCnt]).ToString("F3") + "\t" + (m__G.oCam[0].mPOMM_tY[fileCnt]).ToString("F3")
                                  + "\t" + (umscale * m__G.oCam[0].mPOMM_rX[fileCnt]).ToString("F2") + "\t" + (umscale * m__G.oCam[0].mPOMM_rY[fileCnt]).ToString("F2") + "\t" + (umscale * m__G.oCam[0].mPOMM_rZ[fileCnt]).ToString("F2") + "\t" + (minscale * m__G.oCam[0].mPOMM_rTZ[fileCnt]).ToString("F2")
                                  + "\t";
