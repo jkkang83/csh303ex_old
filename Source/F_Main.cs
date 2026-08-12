@@ -6415,6 +6415,14 @@ namespace CSH030Ex
 
             m__G.oCam[0].bPseudoOMM = m__G.m_bPseudoOMM;
         }
+        public void SetPseudoOMM(bool enable)
+        {
+            cbPseudoOMM.Checked = enable;
+
+            m__G.m_bPseudoOMM = enable;
+            m__G.oCam[0].bPseudoOMM = enable;
+        }
+
     }
 }
 

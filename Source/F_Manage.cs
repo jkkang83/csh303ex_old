@@ -212,31 +212,51 @@ namespace CSH030Ex
             byte[] sRnBuf = null;
             byte[] sendBuf = null;
 
-
+            int lfrmCnt = 0;
             switch (cmd)
             {
                 case "P_S":
-                    int markID = 0;
+                    if(arry.Length > 2) lfrmCnt = int.Parse(arry[1]);
                     if (InvokeRequired)
                     {
                         BeginInvoke((MethodInvoker)delegate
                         {
                             if (!m__G.m_bHideAllGraph)
-                                AddViewLog(string.Format("P_S Recieve\r\n", markID));
+                            {
+                                AddViewLog(string.Format("P_S Recieve, Data Length :{0}\r\n", lfrmCnt));
+                                if(lfrmCnt == 17)
+                                {
+                                    MyOwner.SetPseudoOMM(true);
+                                }
+                                else
+                                {
+                                    MyOwner.SetPseudoOMM(false);
+                                }
+                            }
                         });
 
                     }
                     else
                     {
                         if (!m__G.m_bHideAllGraph)
-                            AddViewLog(string.Format("P_S Recieve, Mark ID :{0}\r\n", markID));
+                        {
+                            AddViewLog(string.Format("P_S Recieve, Data Length :{0}\r\n", lfrmCnt));
+                            if (lfrmCnt == 17)
+                            {
+                                MyOwner.SetPseudoOMM(true);
+                            }
+                            else
+                            {
+                                MyOwner.SetPseudoOMM(false);
+                            }
+                        }
                     }
 
                     break;
                 case "R_S": //Request Inspection
                             //Thread.Sleep(10);
                     m__G.mDoingStatus = "Triggered Measure";
-                    int lfrmCnt = int.Parse(arry[1]);
+                    lfrmCnt = int.Parse(arry[1]);
                     if (!m__G.m_bHideAllGraph) 
                         AddViewLog(string.Format("[{0}] - R_S Recieve, trg :{1}\r\n", RunNum++, lfrmCnt));
 

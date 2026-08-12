@@ -3922,7 +3922,6 @@ namespace CSH030Ex
             //    m__G.oCam[0].DrawCSHCross(Brushes.Red);
             //}
         }
-        private string m_LastBmpFolder = "";
         private void btnLoadBmpFindMark_Click(object sender, EventArgs e)
         {
             m__G.mFAL.mCandidateIndex = 0;
@@ -3936,22 +3935,8 @@ namespace CSH030Ex
             openFile.Multiselect = true;
             openFile.Filter = "BMP(*.bmp)|*.bmp";
 
-            // 이전에 열었던 폴더가 있으면 그 폴더에서 시작
-            if (!string.IsNullOrEmpty(m_LastBmpFolder) &&
-                Directory.Exists(m_LastBmpFolder))
-            {
-                openFile.InitialDirectory = m_LastBmpFolder;
-            }
-            else
-            {
-                openFile.InitialDirectory = defaultPath;
-            }
-
             if (openFile.ShowDialog() != DialogResult.OK)
                 return;
-
-            // 선택한 파일의 폴더 기억
-            m_LastBmpFolder = Path.GetDirectoryName(openFile.FileName);
 
             m__G.oCam[0].mFAL.ClearCommonImgFile();
             //  영상들의 처리에 앞서서 반드시 들어가야 한다.

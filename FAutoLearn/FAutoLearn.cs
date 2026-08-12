@@ -5999,7 +5999,7 @@ namespace FAutoLearn
         public double RadBetween2DVector(double a1, double b1, double a2, double b2)
         {
             //  return Radian Angle
-            return Math.Acos((a1 * a2 + b1 + b2) / (Math.Sqrt(a1 * a1 + b1 * b1) * Math.Sqrt(a2 * a2 + b2 * b2)));
+            return Math.Acos((a1 * a2 + b1 * b2) / (Math.Sqrt(a1 * a1 + b1 * b1) * Math.Sqrt(a2 * a2 + b2 * b2)));
         }
         public double CalcPeakDiff(int[] diffs)
         {
