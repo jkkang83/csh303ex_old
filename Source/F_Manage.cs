@@ -5100,15 +5100,6 @@ namespace CSH030Ex
                 m_LastSampleNumber = -1;
                 m__G.mForcedSampleNumber = -1;
             }
-
-            if (IsHold)
-            {
-                lblSaveUserImage.ForeColor = Color.LightGray;
-            }
-            else
-            {
-                lblSaveUserImage.ForeColor = Color.Black;
-            }
         }
         public void SaveCurrentSampleNumber(int index)
         {
