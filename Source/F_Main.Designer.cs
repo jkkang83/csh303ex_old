@@ -1519,7 +1519,7 @@
             this.Name = "F_Main";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "CSH030Ex_26081201_3Line 8.1old";
+            this.Text = "CSH030Ex_26081301_3Line 8.1old";
             this.TransparencyKey = System.Drawing.Color.Gray;
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.F_Main_FormClosing);

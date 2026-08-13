@@ -224,23 +224,7 @@ namespace CSH030Ex
                             if (!m__G.m_bHideAllGraph)
                             {
                                 AddViewLog(string.Format("P_S Recieve, Data Length :{0}\r\n", lfrmCnt));
-                                if(lfrmCnt == 17)
-                                {
-                                    MyOwner.SetPseudoOMM(true);
-                                }
-                                else
-                                {
-                                    MyOwner.SetPseudoOMM(false);
-                                }
                             }
-                        });
-
-                    }
-                    else
-                    {
-                        if (!m__G.m_bHideAllGraph)
-                        {
-                            AddViewLog(string.Format("P_S Recieve, Data Length :{0}\r\n", lfrmCnt));
                             if (lfrmCnt == 17)
                             {
                                 MyOwner.SetPseudoOMM(true);
@@ -249,7 +233,25 @@ namespace CSH030Ex
                             {
                                 MyOwner.SetPseudoOMM(false);
                             }
+                            UpdateCheckStates();
+                        });
+
+                    }
+                    else
+                    {
+                        if (!m__G.m_bHideAllGraph)
+                        {
+                            AddViewLog(string.Format("P_S Recieve, Data Length :{0}\r\n", lfrmCnt));
                         }
+                        if (lfrmCnt == 17)
+                        {
+                            MyOwner.SetPseudoOMM(true);
+                        }
+                        else
+                        {
+                            MyOwner.SetPseudoOMM(false);
+                        }
+                        UpdateCheckStates();
                     }
 
                     break;
@@ -4824,8 +4826,12 @@ namespace CSH030Ex
 
         public void UpdateCheckStates()
         {
-            if (m__G.m_bSaveRawData) lblSaveRawData.ForeColor = Color.Black; else lblSaveRawData.ForeColor = Color.LightGray;
-            if (m__G.m_bScreenCapture) lblSaveScreen.ForeColor = Color.Black; else lblSaveScreen.ForeColor = Color.LightGray;
+            if (!m__G.m_bSaveRawData) lblSaveRawData.ForeColor = Color.LightGray; else lblSaveRawData.ForeColor = Color.Aqua;
+            if (!m__G.m_bHideAllGraph) lblHideAllGraph.ForeColor = Color.LightGray; else lblHideAllGraph.ForeColor = Color.Aqua;
+            if (!m__G.m_bSaveNgImage) lblSaveNG.ForeColor = Color.LightGray; else lblSaveNG.ForeColor = Color.Aqua;
+            if (!m__G.m_bOISOption) lblOISOption.ForeColor = Color.LightGray; else lblOISOption.ForeColor = Color.Aqua;
+            if (!m__G.m_bSaveFImage) lblSaveUserImage.ForeColor = Color.LightGray; else lblSaveUserImage.ForeColor = Color.Aqua;
+            if (!m__G.m_bPseudoOMM) lblPSeudoOmm.ForeColor = Color.LightGray; else lblPSeudoOmm.ForeColor = Color.Aqua;
         }
 
         private void btnToAdmin_Click(object sender, EventArgs e)
@@ -5097,11 +5103,11 @@ namespace CSH030Ex
 
             if (IsHold)
             {
-                lblSampleCountOn.ForeColor = Color.LightGray;
+                lblSaveUserImage.ForeColor = Color.LightGray;
             }
             else
             {
-                lblSampleCountOn.ForeColor = Color.Black;
+                lblSaveUserImage.ForeColor = Color.Black;
             }
         }
         public void SaveCurrentSampleNumber(int index)
