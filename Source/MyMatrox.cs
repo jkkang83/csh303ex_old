@@ -140,7 +140,7 @@ namespace S2System.Vision
         public static int allocatedSysNum = 0;
         public static int MAX_DEFAULT_GRAB_COUNT = 2;                     // 
 
-        public static int MAX_TRGGRAB_COUNT = 7000;                     // max 1000Frame/sec * 5sec = 5000
+        public static int MAX_TRGGRAB_COUNT = 10000;                     // max 1000Frame/sec * 5sec = 5000
         public static int MAX_GRAB_COUNT = 1000;                     // max 1000Frame/sec * 5sec = 5000
         public string mMatroxMsg = "";
 

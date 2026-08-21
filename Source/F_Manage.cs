@@ -25,7 +25,8 @@ namespace CSH030Ex
 {
     public partial class FManage : Form
     {
-
+        public const long GB = 1024L * 1024 * 1024;
+        public const long mlimit = 100 * GB;
         public delegate void LoadData(int type, string data); //rcp : 0, spec : 1
         public event LoadData On_LoadData;
         public delegate void SaveData(int type, string data); //rcp : 0, spec : 1
@@ -1841,6 +1842,88 @@ namespace CSH030Ex
 
                 double totalTime = (endTime - triggeredTime) / (double)(lTimerFrequency);
 
+                if (m__G.m_bSaveFImage)
+                {
+                    string sDate = DateTime.Now.ToString("yyMMddHHmmss");
+                    string fileName = m__G.m_SaveDirectory + string.Format("\\Result\\RawData\\User\\{0}_Image{1}\\", sDate, m__G.oCam[0].mTargetTriggerCount);
+
+                    if (!Directory.Exists(fileName))
+                        Directory.CreateDirectory(fileName);
+
+                    DriveInfo drive = new DriveInfo(Path.GetPathRoot(fileName));
+                    if (drive.IsReady)
+                    {
+                        if (drive.AvailableFreeSpace <= mlimit)
+                        {
+                            double freeGB = drive.AvailableFreeSpace / (double)GB;
+
+                            MessageBox.Show(
+                                $"남은 용량 : {freeGB:F1} GB\n불필요한 파일을 삭제해 주세요.",
+                                "용량 부족",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
+                        }
+                        else
+                        {
+                            for (int imgIndex = 0; imgIndex < m__G.oCam[0].mTargetTriggerCount; imgIndex++)
+                            {
+                                string savefilename = fileName + "Ana" + imgIndex.ToString() + ".bmp";
+                                m__G.oCam[0].SaveGrabbedImage(imgIndex, savefilename);
+                            }
+                        }
+                    }
+                }
+                if (m__G.m_bSaveNgImage)
+                {
+                    bool NeedToSaveImage = false;
+                    double min = 9999;
+                    double max = -9999;
+                    for (int pi = 0; pi < m__G.oCam[0].mTargetTriggerCount; pi++)
+                    {
+                        if (m__G.oCam[0].mC_pY[pi] < min)
+                            min = m__G.oCam[0].mC_pY[pi];
+                        if (m__G.oCam[0].mC_pY[pi] > max)
+                            max = m__G.oCam[0].mC_pY[pi];
+
+                    }
+                    if ((max - min) * (5.5 / Global.LensMag) > 100.0)  //  300msec ~ 330msec 에서 최대최소의 변위차가 5um 이상인 경우 영상 저장 필요. 정상적인 경우 변위 1um 이하
+                        NeedToSaveImage = true;
+                    for (int pi = 0; pi < m__G.oCam[0].mTargetTriggerCount; pi++)
+                    {
+                        if (m__G.oCam[0].mC_pY[pi] == 0)
+                            NeedToSaveImage = true;
+                    }
+                    if (NeedToSaveImage)
+                    {
+                        string sDate = DateTime.Now.ToString("yyMMddHHmmss");
+                        string fileName = m__G.m_SaveDirectory + string.Format("\\Result\\RawData\\NG\\{0}\\Image{1}\\", sDate, m__G.oCam[0].mTargetTriggerCount);
+                        if (!Directory.Exists(fileName))
+                            Directory.CreateDirectory(fileName);
+                        // 저장 경로의 드라이브 정보
+                        DriveInfo drive = new DriveInfo(Path.GetPathRoot(fileName));
+                        if (drive.IsReady)
+                        {
+                            if (drive.AvailableFreeSpace <= mlimit)
+                            {
+                                double freeGB = drive.AvailableFreeSpace / (double)GB;
+
+                                MessageBox.Show(
+                                    $"남은 용량 : {freeGB:F1} GB\n불필요한 파일을 삭제해 주세요.",
+                                    "용량 부족",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Warning);
+                            }
+                            else
+                            {
+                                for (int imgIndex = 0; imgIndex < m__G.oCam[0].mTargetTriggerCount; imgIndex++)
+                                {
+                                    string savefilename = fileName + "Ana" + imgIndex.ToString() + ".bmp";
+                                    m__G.oCam[0].SaveGrabbedImage(imgIndex, savefilename);
+                                }
+                            }
+                        }
+                    }
+                }
                 // 다음은 자화에서 검증완료
                 if (!m__G.m_bNoHostPC)
                 {
@@ -1897,53 +1980,6 @@ namespace CSH030Ex
 
                 m_LastSampleNumber--;
 
-                if(m__G.m_bSaveFImage)
-                {
-                    string fileName = m__G.m_RootDirectory + string.Format("\\Result\\RawData\\User\\Image{0}\\", m__G.oCam[0].mTargetTriggerCount);
-
-                    if (!Directory.Exists(fileName))
-                        Directory.CreateDirectory(fileName);
-                    for (int imgIndex = 0; imgIndex < m__G.oCam[0].mTargetTriggerCount; imgIndex++)
-                    {
-                        string savefilename = fileName + "Ana" + imgIndex.ToString() + ".bmp";
-                        m__G.oCam[0].SaveGrabbedImage(imgIndex, savefilename);
-                    }
-                }
-                if (m__G.m_bSaveNgImage)
-                {
-                    bool NeedToSaveImage = false;
-                    double min = 9999;
-                    double max = -9999;
-                    for (int pi = 0; pi < m__G.oCam[0].mTargetTriggerCount; pi++)
-                    {
-                        if (m__G.oCam[0].mC_pY[pi] < min)
-                            min = m__G.oCam[0].mC_pY[pi];
-                        if (m__G.oCam[0].mC_pY[pi] > max)
-                            max = m__G.oCam[0].mC_pY[pi];
-
-                    }
-                    if ((max - min) * (5.5 / Global.LensMag) > 100.0)  //  300msec ~ 330msec 에서 최대최소의 변위차가 5um 이상인 경우 영상 저장 필요. 정상적인 경우 변위 1um 이하
-                        NeedToSaveImage = true;
-                    for (int pi = 0; pi < m__G.oCam[0].mTargetTriggerCount; pi++)
-                    {
-                        if (m__G.oCam[0].mC_pY[pi] == 0)
-                            NeedToSaveImage = true;
-                    }
-                    if (NeedToSaveImage)
-                    {
-                        string sDate = DateTime.Now.ToString("yyMMddHHmmss");
-                        string fileName = m__G.m_RootDirectory + string.Format("\\Result\\RawData\\NG\\{0}\\Image{1}\\", sDate, m__G.oCam[0].mTargetTriggerCount);
-
-                        if (!Directory.Exists(fileName))
-                            Directory.CreateDirectory(fileName);
-                        for (int imgIndex = 0; imgIndex < m__G.oCam[0].mTargetTriggerCount; imgIndex++)
-                        {
-                            string savefilename = fileName + "Ana" + imgIndex.ToString() + ".bmp";
-                            m__G.oCam[0].SaveGrabbedImage(imgIndex, savefilename);
-                        }
-                    }
-                }
-                /////////////////////////////////////////////////////////////////
                 /////////////////////////////////////////////////////////////////
                 ///
                 if (m_LastSampleNumber >= 0)

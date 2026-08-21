@@ -1106,6 +1106,7 @@ namespace CSH030Ex
         public int m_AFPeakTimeIndex = 0;
         public int m_L3PeakTimeIndex = 0;
         public string m_RootDirectory = "C:\\CSHTest";
+        public string m_SaveDirectory = "D:\\CSHTest";
         public string[] m_FWVersion = new string[4];
 
         //  20170703    Camera Default ROI Definition
